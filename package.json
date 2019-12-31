@@ -1,13 +1,13 @@
 {
-	"name": "app-name",
-	"productName": "App Name",
-	"version": "0.0.0",
-	"description": "The best app ever",
+	"name": "waller",
+	"productName": "Waller",
+	"version": "0.0.2",
+	"description": "Waller is a application for a social media marketing specialist.",
 	"license": "MIT",
-	"repository": "sindresorhus/electron-boilerplate",
+	"repository": "caffellatte/waller",
 	"author": {
-		"name": "Your Name",
-		"email": "user@gmail.com",
+		"name": "Mikhail Lutsenko",
+		"email": "m.g.lutsenko@gmail.com",
 		"url": "https://sindresorhus.com"
 	},
 	"scripts": {
@@ -44,7 +44,7 @@
 		"releaseDraft": false
 	},
 	"build": {
-		"appId": "com.company.AppName",
+		"appId": "com.flex.waller",
 		"mac": {
 			"category": "public.app-category.social-networking",
 			"darkModeSupport": true
