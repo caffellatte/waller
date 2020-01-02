@@ -2,6 +2,7 @@
 	"name": "waller",
 	"productName": "Waller",
 	"version": "0.0.3",
+	"main": "./main.js",
 	"description": "Waller is a application for a social media marketing specialist.",
 	"license": "MIT",
 	"repository": "caffellatte/waller",
@@ -17,6 +18,8 @@
 		"start": "electron .",
 		"pack": "electron-builder --dir",
 		"dist": "electron-builder --macos --linux --windows",
+		"dist:mac": "electron-builder --macos",
+		"dist:win": "electron-builder --windows",
 		"release": "np"
 	},
 	"dependencies": {
@@ -29,7 +32,7 @@
 	},
 	"devDependencies": {
 		"electron": "^7.1.1",
-		"electron-builder": "^21.2.0",
+		"electron-builder": "^22.2.0",
 		"np": "^5.0.3",
 		"xo": "^0.25.3"
 	},
@@ -70,6 +73,11 @@
 				"deb"
 			],
 			"category": "Network;Chat"
+		},
+		"win": {
+			"target": [
+				"nsis"
+			]
 		}
 	}
 }

@@ -1,6 +1,6 @@
 'use strict';
 const path = require('path');
-const {app, Menu, shell} = require('electron');
+const {app, Menu, shell, BrowserWindow} = require('electron');
 const {
 	is,
 	appMenu,
@@ -9,10 +9,47 @@ const {
 	openNewGitHubIssue,
 	debugInfo
 } = require('electron-util');
-const config = require('./config');
+const config = require('../config');
+
+function devToolsLog(s) {
+  console.log(s)
+  if (mainWindow && mainWindow.webContents) {
+    mainWindow.webContents.executeJavaScript(`console.log("${s}")`)
+  }
+}
+
+let preferencesWindow;
+
+const createPreferencesWindow = async () => {
+	const win = new BrowserWindow({
+		title: app.name,
+		show: false,
+		width: 1024,
+		height: 768,
+		acceptFirstMouse: true,
+		titleBarStyle: 'hidden',
+		webPreferences: {
+			nodeIntegration: true
+		}
+	});
+
+	win.on('ready-to-show', () => {
+		win.show();
+	});
+
+	win.on('closed', () => {
+		// Dereference the window
+		// For multiple windows store them in an array
+		preferencesWindow = undefined;
+	});
+
+	await win.loadFile(path.join(__dirname, '..', 'sections', 'preferences', 'preferences.html'));
+
+	return win;
+};
 
 const showPreferences = () => {
-	// Show the app's preferences here
+  createPreferencesWindow()
 };
 
 const helpSubmenu = [
@@ -51,7 +88,7 @@ if (!is.macos) {
 		},
 		aboutMenuItem({
 			icon: path.join(__dirname, 'static', 'icon.png'),
-			text: 'Created by Your Name'
+			text: 'Created by Mikhail Lutsenko'
 		})
 	);
 }
