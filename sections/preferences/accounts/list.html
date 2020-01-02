@@ -1,16 +1,41 @@
 <template class="section">
-  <h1>Accounts List</h1>
+  <ul class="list-group">
+    <li class="list-group-header">
+      <input class="form-control" type="text" placeholder="Search for account">
+    </li>
+    <li class="list-group-item">
+      <img class="img-circle media-object pull-left" src="../../assets/img/avatar.png" width="32" height="32">
+      <div class="media-body">
+        <strong>List item title</strong>
+        <p>Lorem ipsum dolor sit amet.</p>
+      </div>
+    </li>
+    <li class="list-group-item">
+      <img class="img-circle media-object pull-left" src="../../assets/img/avatar2.png" width="32" height="32">
+      <div class="media-body">
+        <strong>List item title</strong>
+        <p>Lorem ipsum dolor sit amet.</p>
+      </div>
+    </li>
+  </ul>
 </template>
+
 <template class="footer">
   <footer class="toolbar toolbar-footer">
     <div class="toolbar-actions">
-      <button class="btn btn-default">
+      <button id="preferences-cancel" class="btn btn-default">
         Cancel
       </button>
 
-      <button class="btn btn-primary pull-right">
+      <button id="preferences-save" class="btn btn-primary pull-right">
         Save
       </button>
     </div>
   </footer>
+</template>
+
+<template class="add-account-button-template">
+  <button id="add-account-button" class="btn btn-large pull-right">
+      <span class="icon icon-plus"></span>
+  </button>
 </template>
