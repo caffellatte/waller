@@ -1,7 +1,7 @@
 {
 	"name": "waller",
 	"productName": "Waller",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"main": "./main.js",
 	"description": "Waller is a application for a social media marketing specialist.",
 	"license": "MIT",
