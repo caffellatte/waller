@@ -1,16 +1,21 @@
 {
 	"name": "waller",
 	"productName": "Waller",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"main": "./main.js",
 	"description": "Waller is a application for a social media marketing specialist.",
 	"license": "MIT",
 	"repository": "caffellatte/waller",
-  "eslintConfig": {
-    "rules": {
-      "camelcase": ["error", { "properties": "never" } ]
-    }
-  },
+	"eslintConfig": {
+		"rules": {
+			"camelcase": [
+				"error",
+				{
+					"properties": "never"
+				}
+			]
+		}
+	},
 	"author": {
 		"name": "Mikhail Lutsenko",
 		"email": "m.g.lutsenko@gmail.com",
