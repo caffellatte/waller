@@ -6,6 +6,11 @@
 	"description": "Waller is a application for a social media marketing specialist.",
 	"license": "MIT",
 	"repository": "caffellatte/waller",
+  "eslintConfig": {
+    "rules": {
+      "camelcase": ["error", { "properties": "never" } ]
+    }
+  },
 	"author": {
 		"name": "Mikhail Lutsenko",
 		"email": "m.g.lutsenko@gmail.com",
@@ -28,7 +33,9 @@
 		"electron-store": "^5.1.0",
 		"electron-unhandled": "^3.0.0",
 		"electron-updater": "^4.0.6",
-		"electron-util": "^0.13.0"
+		"electron-util": "^0.13.0",
+		"glob": "^7.1.6",
+		"vk-io": "^4.0.0-rc.30"
 	},
 	"devDependencies": {
 		"electron": "^7.1.1",

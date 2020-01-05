@@ -1,23 +1,22 @@
 <template class="section">
-  <ul class="list-group">
+  <ul id="accounts-list" class="list-group">
     <li class="list-group-header">
       <input class="form-control" type="text" placeholder="Search for account">
     </li>
-    <li class="list-group-item">
-      <img class="img-circle media-object pull-left" src="../../assets/img/avatar.png" width="32" height="32">
-      <div class="media-body">
-        <strong>List item title</strong>
-        <p>Lorem ipsum dolor sit amet.</p>
-      </div>
-    </li>
-    <li class="list-group-item">
-      <img class="img-circle media-object pull-left" src="../../assets/img/avatar2.png" width="32" height="32">
-      <div class="media-body">
-        <strong>List item title</strong>
-        <p>Lorem ipsum dolor sit amet.</p>
-      </div>
-    </li>
   </ul>
+</template>
+
+<template class="list-group-item-template">
+  <li class="list-group-item">
+    <div class="media-body">
+      <img class="img-circle media-object pull-left" src="" width="32" height="32">
+      <strong></strong>
+      <button class="btn btn-default pull-right" style="margin-top: 8px;">
+        <span class="icon icon-trash"></span>
+      </button>
+      <p></p>
+    </div>
+  </li>
 </template>
 
 <template class="footer">

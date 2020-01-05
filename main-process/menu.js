@@ -10,9 +10,12 @@ const {
   debugInfo
 } = require('electron-util');
 const config = require('../config');
+const DataStore = require('./store');
+const accountsData = new DataStore({name: 'Accounts'});
+let preferencesWindow = null;
 
 const createPreferencesWindow = async () => {
-  let preferencesWindow = new BrowserWindow({
+  preferencesWindow = new BrowserWindow({
     title: app.name,
     show: false,
     width: 1024,
@@ -26,6 +29,10 @@ const createPreferencesWindow = async () => {
 
   preferencesWindow.on('ready-to-show', () => {
     preferencesWindow.show();
+  });
+
+  preferencesWindow.once('show', () => {
+    preferencesWindow.webContents.send('accounts', accountsData.accounts);
   });
 
   preferencesWindow.on('closed', () => {

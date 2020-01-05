@@ -1,6 +1,6 @@
 'use strict';
 const path = require('path');
-const {app, BrowserWindow, Menu, ipcMain, nativeTheme} = require('electron');
+const {app, BrowserWindow, Menu, nativeTheme} = require('electron');
 // Import autoupdater module const {autoUpdater} = require('electron-updater');
 const {is} = require('electron-util');
 const unhandled = require('electron-unhandled');
@@ -8,6 +8,9 @@ const debug = require('electron-debug');
 const contextMenu = require('electron-context-menu');
 const config = require('./config');
 const menu = require('./main-process/menu');
+const accounts = require('./main-process/preferences/accounts');
+console.log(accounts);
+console.log(app.getPath('userData'));
 // Import configuration from package.json const packageJson = require('./package.json');
 
 // Prints given message both in the terminal console and in the DevTools
@@ -18,14 +21,16 @@ function devToolsLog(s) {
   }
 }
 
+// Require each JS file in the main-process dir
+// function loadDemos() {
+//   const files = glob.sync(path.join(__dirname, 'main-process/**/*.js'))
+//   files.forEach((file) => { require(file) })
+// }
+
 unhandled();
 debug();
 contextMenu();
 
-ipcMain.on('asynchronous-message', (event, arg) => {
-  event.sender.send('asynchronous-reply', 'pong');
-  devToolsLog('asynchronous-reply pong', arg);
-});
 // Unhandled Promise Rejection - TypeError : Cannot read property "appId" of undefined
 // https://github.com/sindresorhus/electron-boilerplate/issues/31
 //

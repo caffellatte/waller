@@ -7,6 +7,43 @@ class DataStore extends Store {
 
     // Initialize with todos or empty array
     this.todos = this.get('todos') || [];
+    this.accounts = this.get('accounts') || {};
+  }
+
+  getAccounts() {
+    // Set object's accounts to accounts in JSON file
+    this.accounts = this.get('accounts') || {};
+
+    return this;
+  }
+
+  saveAccounts() {
+    // Save accounts to JSON file
+    this.set('accounts', this.accounts);
+
+    // Returning 'this' allows method chaining
+    return this;
+  }
+
+  addAccount(account) {
+    // Merge the existing todos with the new todo
+    this.accounts[account.user_id] = account;
+
+    return this.saveAccounts();
+  }
+
+  deleteAccount(account) {
+    // Filter out the target todo
+    delete this.accounts[account.user_id];
+
+    return this.saveAccounts();
+  }
+
+  getTodos() {
+    // Set object's todos to todos in JSON file
+    this.todos = this.get('todos') || [];
+
+    return this;
   }
 
   saveTodos() {
@@ -14,13 +51,6 @@ class DataStore extends Store {
     this.set('todos', this.todos);
 
     // Returning 'this' allows method chaining
-    return this;
-  }
-
-  getTodos() {
-    // Set object's todos to todos in JSON file
-    this.todos = this.get('todos') || [];
-
     return this;
   }
 
