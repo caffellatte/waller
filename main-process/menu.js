@@ -11,44 +11,13 @@ const {
 } = require('electron-util');
 const config = require('../config');
 const DataStore = require('./store');
-const accountsData = new DataStore({name: 'accounts'});
-let preferencesWindow = null;
-
-const createPreferencesWindow = async () => {
-  preferencesWindow = new BrowserWindow({
-    title: app.name,
-    show: false,
-    width: 1024,
-    height: 768,
-    frame: false,
-    acceptFirstMouse: true,
-    titleBarStyle: 'hidden',
-    webPreferences: {
-      nodeIntegration: true
-    }
-  });
-
-  preferencesWindow.on('ready-to-show', () => {
-    preferencesWindow.show();
-  });
-
-  preferencesWindow.once('show', () => {
-    preferencesWindow.webContents.send('accounts', accountsData.accounts);
-  });
-
-  preferencesWindow.on('closed', () => {
-    // Dereference the window
-    // For multiple windows store them in an array
-    preferencesWindow = undefined;
-  });
-
-  await preferencesWindow.loadFile(path.join(__dirname, '..', 'sections', 'preferences', 'preferences.html'));
-
-  return preferencesWindow;
-};
+const preferencesData = new DataStore({name: 'preferences'});
 
 const showPreferences = () => {
-  createPreferencesWindow();
+  const window = BrowserWindow.getAllWindows().filter(win => {
+    return win.isVisible();
+  });
+  window[0].webContents.send('show-preferences', preferencesData.preferences);
 };
 
 const helpSubmenu = [

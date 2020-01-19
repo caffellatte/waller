@@ -1,18 +1,79 @@
-<!doctype html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title>Waller</title>
-		<link rel="stylesheet" href="assets/css/index.css">
-	</head>
-	<body>
-		<div class="container">
-			<header>
-				<h1>Waller</h1>
-				<p></p>
-			</header>
-			<section class="main"></section>
-			<footer></footer>
-		</div>
-	</body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+    <title>Waller</title>
+    <!-- Stylesheets -->
+
+		<style>
+      .window-content {
+        background-color: #f5f5f4;
+      }
+    </style>
+    <link rel="import" href="sections/preferences/accounts/list.html">
+    <link rel="import" href="sections/preferences/accounts/account.html">
+    <link rel="import" href="sections/preferences/general/general.html">
+
+	  <link rel="stylesheet" href="assets/css/photon.css">
+	  <link rel="stylesheet" href="assets/css/partision.css">
+
+    <!-- <script src="../../renderer-process/preferences/preferences.js" charset="utf-8"></script> -->
+    <!-- Javascript -->
+    <!-- <script src="js/menu.js" charset="utf-8"></script> -->
+  </head>
+  <body>
+    <div class="window">
+      <!-- .toolbar-header sits at the top of your app -->
+      <header style="-webkit-app-region: drag" class="toolbar toolbar-header">
+        <h1 class="title" style="font-size: 14px;">Preferences</h1>
+        <div class="toolbar-actions">
+        <div class="btn-group">
+          <button id="icon-switch" class="btn btn-large">
+						<a id="preferences-general" data-section="preferences-general" href="#">
+	            <span class="icon icon-switch"></span>
+		    	  </a>
+          </button>
+          <button id="icon-users" class="btn btn-large">
+					  <a id="preferences-accounts" data-section="preferences-accounts" href="#">
+              <span class="icon icon-users"></span>
+						</a>
+        	</button>
+        </div>
+
+        <!-- <button class="btn btn-default">
+          <span class="icon icon-home icon-text"></span>
+          Filters
+        </button> -->
+
+        <button id="accounts-add" class="btn btn-large pull-right partision">
+            <span class="icon icon-plus"></span>
+        </button>
+      </header>
+
+      <!-- Your app's content goes inside .window-content -->
+      <div class="window-content" id="wrapper">
+      </div>
+      <footer class="toolbar toolbar-footer partision">
+        <div class="toolbar-actions">
+          <button id="preferences-cancel" class="btn btn-default">
+            Cancel
+          </button>
+
+          <button id="preferences-save" class="btn btn-primary pull-right">
+            Save
+          </button>
+        </div>
+      </footer>
+    </div>
+    <main class="content js-content"></main>
+    <script>
+      require('./renderer-process/preferences/preferences')
+      // require('../../assets/imports')
+      // require('../../assets/ex-links')
+      // require('../../assets/nav')
+      // require('../../assets/demo-btns')
+      // require('../../assets/code-blocks')
+      // require('../../assets/normalize-shortcuts')
+    </script>
+  </body>
 </html>

@@ -12,6 +12,9 @@ const contextMenu = require('electron-context-menu');
 const menu = require('./main-process/menu');
 // Accounts
 const accounts = require('./main-process/preferences/accounts');
+const DataStore = require('./main-process/store');
+const accountsData = new DataStore({name: 'accounts'});
+const preferencesData = new DataStore({name: 'preferences'});
 console.log('accounts:', accounts);
 console.log(app.getPath('userData'));
 
@@ -36,34 +39,37 @@ app.setAppUserModelId('com.flex.waller');
 let mainWindow = null;
 
 const createMainWindow = async () => {
-  const win = new BrowserWindow({
+  let preferencesWindow = new BrowserWindow({
     title: app.name,
     show: false,
-    width: 800,
-    height: 600,
-    minWidth: 500,
-    minHeight: 200,
-    acceptFirstMouse: true,
+    width: 1024,
+    height: 768,
     frame: false,
+    acceptFirstMouse: true,
     titleBarStyle: 'hidden',
     webPreferences: {
       nodeIntegration: true
     }
   });
 
-  win.on('ready-to-show', () => {
-    win.show();
+  preferencesWindow.on('ready-to-show', () => {
+    preferencesWindow.show();
   });
 
-  win.on('closed', () => {
+  preferencesWindow.once('show', () => {
+    preferencesWindow.webContents.send('accounts', accountsData.accounts);
+    preferencesWindow.webContents.send('show-preferences', preferencesData.preferences);
+  });
+
+  preferencesWindow.on('closed', () => {
     // Dereference the window
     // For multiple windows store them in an array
-    mainWindow = undefined;
+    preferencesWindow = undefined;
   });
 
-  await win.loadFile(path.join(__dirname, 'sections', 'index.html'));
+  await preferencesWindow.loadFile(path.join(__dirname, 'index.html'));
 
-  return win;
+  return preferencesWindow;
 };
 
 // Prevent multiple instances of the app

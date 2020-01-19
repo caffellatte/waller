@@ -6,9 +6,10 @@ class DataStore extends Store {
   constructor(settings) {
     super(settings);
 
-    // Initialize with todos or empty array
+    // Initialize with objects or empty array / object
     this.todos = this.get('todos') || [];
     this.accounts = this.get('accounts') || {};
+    this.preferences = this.get('preferences') || {theme: 'dark'};
   }
 
   getAccounts() {
@@ -38,6 +39,35 @@ class DataStore extends Store {
     delete this.accounts[user_id];
 
     return this.saveAccounts();
+  }
+
+  getPreferences() {
+    // Set object's preferences to preferences in JSON file
+    this.preferences = this.get('preferences') || {};
+
+    return this;
+  }
+
+  savePreferences() {
+    // Save preferences to JSON file
+    this.set('preferences', this.preferences);
+
+    // Returning 'this' allows method chaining
+    return this;
+  }
+
+  addPreferences(preference) {
+    // Merge the existing preferences with the new preferences
+    this.preferences[preference.title] = preference;
+
+    return this.saveAccounts();
+  }
+
+  deletePreferences(title) {
+    // Filter out the target preferences
+    delete this.preferences[title];
+
+    return this.savePreferences();
   }
 
   getTodos() {

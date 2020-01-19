@@ -27,6 +27,15 @@ ipcRenderer.on('accounts', (event, accounts) => {
   updateAccountsList(accounts);
 });
 
+// On receive accounts
+ipcRenderer.on('show-preferences', preferences => {
+  console.log('show-preferences', preferences);
+  accountsList.classList.remove('is-shown');
+  appearanceForm.classList.add('is-shown');
+  preferencesGeneral.classList.add('is-shown');
+  accountsAddButton.classList.remove('is-shown');
+});
+
 // Old with  footer, add buttons
 // const importTemplates = (fileName, footer, add) => {
 const importTemplates = fileName => {
@@ -91,8 +100,10 @@ const deleteAccount = userId => {
 importTemplates('list.html');
 importTemplates('general.html');
 const accountsList = document.querySelector('#accounts-list');
+const appearanceForm = document.querySelector('#appearance-form');
 const preferencesGeneral = document.querySelector('#general-preferences');
 const accountsAddButton = document.querySelector('#accounts-add');
+
 // Item: toolbarFooter
 // const toolbarFooter = document.querySelector('.toolbar-footer');
 accountsAddButton.classList.remove('is-shown');
@@ -101,11 +112,13 @@ accountsAddButton.addEventListener('click', event => {
   menu.popup(remote.getCurrentWindow());
 });
 preferencesGeneral.classList.add('is-shown');
+appearanceForm.classList.add('is-shown');
 
 // Events
 preferencesGeneralButton.addEventListener('click', event => {
   event.preventDefault();
   accountsList.classList.remove('is-shown');
+  appearanceForm.classList.add('is-shown');
   preferencesGeneral.classList.add('is-shown');
   accountsAddButton.classList.remove('is-shown');
 });
@@ -114,6 +127,7 @@ preferencesGeneralButton.addEventListener('click', event => {
 preferencesAccountsListButton.addEventListener('click', event => {
   event.preventDefault();
   preferencesGeneral.classList.remove('is-shown');
+  appearanceForm.classList.remove('is-shown');
   accountsList.classList.add('is-shown');
   accountsAddButton.classList.add('is-shown');
   // Run
