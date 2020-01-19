@@ -11,10 +11,11 @@
       }
     </style>
     <link rel="import" href="accounts/list.html">
-    <link rel="import" href="accounts/add.html">
+    <link rel="import" href="accounts/account.html">
     <link rel="import" href="general/general.html">
 
 	  <link rel="stylesheet" href="../../assets/css/photon.css">
+	  <link rel="stylesheet" href="../../assets/css/partision.css">
 
     <!-- <script src="../../renderer-process/preferences/preferences.js" charset="utf-8"></script> -->
     <!-- Javascript -->
@@ -37,15 +38,41 @@
               <span class="icon icon-users"></span>
 						</a>
         	</button>
-      </div>
+        </div>
+
+        <!-- <button class="btn btn-default">
+          <span class="icon icon-home icon-text"></span>
+          Filters
+        </button> -->
+
+        <button id="accounts-add" class="btn btn-large pull-right partision">
+            <span class="icon icon-plus"></span>
+        </button>
       </header>
 
       <!-- Your app's content goes inside .window-content -->
       <div class="window-content" id="wrapper">
       </div>
+      <footer class="toolbar toolbar-footer partision">
+        <div class="toolbar-actions">
+          <button id="preferences-cancel" class="btn btn-default">
+            Cancel
+          </button>
+
+          <button id="preferences-save" class="btn btn-primary pull-right">
+            Save
+          </button>
+        </div>
+      </footer>
     </div>
     <script>
       require('../../renderer-process/preferences/preferences')
+      // require('../../assets/imports')
+      // require('../../assets/ex-links')
+      // require('../../assets/nav')
+      // require('../../assets/demo-btns')
+      // require('../../assets/code-blocks')
+      // require('../../assets/normalize-shortcuts')
     </script>
   </body>
 </html>

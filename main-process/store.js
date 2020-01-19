@@ -1,6 +1,7 @@
 'use strict';
 const Store = require('electron-store');
 
+/* eslint-disable camelcase */
 class DataStore extends Store {
   constructor(settings) {
     super(settings);
@@ -32,9 +33,9 @@ class DataStore extends Store {
     return this.saveAccounts();
   }
 
-  deleteAccount(account) {
+  deleteAccount(user_id) {
     // Filter out the target todo
-    delete this.accounts[account.user_id];
+    delete this.accounts[user_id];
 
     return this.saveAccounts();
   }
@@ -68,5 +69,6 @@ class DataStore extends Store {
     return this.saveTodos();
   }
 }
+/* eslint-enable camelcase */
 
 module.exports = DataStore;

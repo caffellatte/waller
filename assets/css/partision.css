@@ -1,0 +1,16 @@
+.partision {
+  /* width: 340px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  color: var(--color-subtle);
+  border-right: 1px solid var(--color-border);
+  background-color: var(--color-bg); */
+  visibility: hidden;
+  display: none;
+  /* opacity: 0; */
+}
+.partision.is-shown {
+  visibility: visible;
+  display: block;
+  /* opacity: 1; */
+}

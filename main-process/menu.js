@@ -11,7 +11,7 @@ const {
 } = require('electron-util');
 const config = require('../config');
 const DataStore = require('./store');
-const accountsData = new DataStore({name: 'Accounts'});
+const accountsData = new DataStore({name: 'accounts'});
 let preferencesWindow = null;
 
 const createPreferencesWindow = async () => {
@@ -20,6 +20,7 @@ const createPreferencesWindow = async () => {
     show: false,
     width: 1024,
     height: 768,
+    frame: false,
     acceptFirstMouse: true,
     titleBarStyle: 'hidden',
     webPreferences: {
