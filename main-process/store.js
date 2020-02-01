@@ -58,7 +58,7 @@ class DataStore extends Store {
 
   addPreferences(preference) {
     // Merge the existing preferences with the new preferences
-    this.preferences[preference.title] = preference;
+    this.preferences[preference.title] = preference.value;
 
     return this.saveAccounts();
   }

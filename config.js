@@ -11,7 +11,7 @@ module.exports = new Store({
       v: '5.103',
       display: 'page',
       redirectUri: 'http://localhost/oauth/redirect',
-      scope: 'friends',
+      scope: 262146,
       responseType: 'token'
     }
   }

@@ -721,16 +721,16 @@ img {
   text-overflow: ellipsis;
 }
 
-.list-group-item {
+.list-group-item, .list-group-item-communities {
   padding: 10px;
   font-size: 12px;
   color: #414142;
   border-top: 1px solid #ddd;
 }
-.list-group-item:first-child {
+.list-group-item:first-child, .list-group-item-communities:first-child {
   border-top: 0;
 }
-.list-group-item.active, .list-group-item.selected {
+.list-group-item.active, .list-group-item.selected, .list-group-item-communities.active, .list-group-item-communities.selected  {
   color: #fff;
   background-color: #116cd6;
 }
