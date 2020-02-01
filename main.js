@@ -416,7 +416,7 @@ const createMainWindow = async () => {
     console.log('preferencesData.vkSelected:', preferencesData.preferences.vkSelected);
     const _account = accountsData.getAccounts().accounts[preferencesData.preferences.vkSelected.user_id];
     preferencesWindow.webContents.send('vk-selected', _account);
-    console.log('preferencesWindow (_account)',  _account);
+    console.log('preferencesWindow (_account)', _account);
     preferencesWindow.webContents.send('groups', _account);
     preferencesWindow.webContents.send('subscriptions', _account);
     preferencesWindow.webContents.send('show-communities', preferencesData.preferences);
