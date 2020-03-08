@@ -3,14 +3,7 @@ const path = require('path');
 const {spawn} = require('child_process');
 const querystring = require('querystring');
 const {ipcMain, app, BrowserWindow, Menu, nativeTheme, shell, session} = require('electron');
-const {
-  is,
-  appMenu,
-  aboutMenuItem,
-  openUrlMenuItem,
-  openNewGitHubIssue,
-  debugInfo
-} = require('electron-util');
+const {is, appMenu, aboutMenuItem, openUrlMenuItem, openNewGitHubIssue, debugInfo} = require('electron-util');
 const {VK} = require('vk-io');
 console.log('nativeTheme:', nativeTheme);
 // Import autoupdater module const {autoUpdater} = require('electron-updater');
@@ -18,10 +11,6 @@ const unhandled = require('electron-unhandled');
 const debug = require('electron-debug');
 const contextMenu = require('electron-context-menu');
 const config = require('./config');
-// Config
-// const config = require('./config');
-// const menu = require('./main-process/menu');
-// Accounts
 const DataStore = require('./main-process/store');
 const accountsData = new DataStore({name: 'accounts'});
 const preferencesData = new DataStore({name: 'preferences'});
@@ -204,6 +193,7 @@ const otherTemplate = [
 ];
 
 const template = process.platform === 'darwin' ? macosTemplate : otherTemplate;
+
 if (is.development) {
   template.push({
     label: 'Debug',
@@ -220,6 +210,7 @@ ipcMain.on('vk-account-option', (event, userId) => {
 });
 
 ipcMain.on('vk-coffee', (event, params) => {
+  event.preventDefault();
   /* eslint-disable camelcase */
   const {id, access_token} = params;
   const child = spawn('coffee', ['vk/vk.coffee', id, access_token]);
