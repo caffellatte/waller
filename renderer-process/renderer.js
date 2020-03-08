@@ -169,7 +169,7 @@ const updateGroupList = _account => {
           clone.querySelector('li.list-group-item-communities > div > strong').textContent = `${value.name}`;
           clone.querySelector('li.list-group-item-communities > div > p').textContent = `vk.com/${value.screen_name} (${value.members_count})`;
           clone.querySelector('input.form-control-sample-size').setAttribute('id', `sample-size-${value.id}`);
-          if(value.members_count > 1000) {
+          if (value.members_count > 1000) {
             clone.querySelector('input.form-control-sample-size').setAttribute('max', 999);
             clone.querySelector('input.form-control-sample-size').setAttribute('placeholder', 999);
             clone.querySelector('input.form-control-sample-size').value = 999;
@@ -178,6 +178,7 @@ const updateGroupList = _account => {
             clone.querySelector('input.form-control-sample-size').setAttribute('placeholder', value.members_count);
             clone.querySelector('input.form-control-sample-size').value = value.members_count;
           }
+
           clone.querySelector('li.list-group-item-communities > div > button').addEventListener('click', event => {
             event.preventDefault();
             document.querySelector(`#spinner-${value.id}`).style.visibility = 'visible';
@@ -186,8 +187,8 @@ const updateGroupList = _account => {
               id: value.id,
               /* eslint-disable camelcase */
               access_token: _account.access_token,
-              /* eslint-enable camelcase */
               sample_size: document.querySelector(`#sample-size-${value.id}`).value
+              /* eslint-enable camelcase */
             });
             document.querySelectorAll('button.btn.btn-default.pull-right.community').forEach(node => {
               node.disabled = true;

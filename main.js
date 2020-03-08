@@ -1,6 +1,5 @@
 'use strict';
 const path = require('path');
-const {spawn} = require('child_process');
 const querystring = require('querystring');
 const {ipcMain, app, BrowserWindow, Menu, nativeTheme, shell, session} = require('electron');
 const {is, appMenu, aboutMenuItem, openUrlMenuItem, openNewGitHubIssue, debugInfo} = require('electron-util');
@@ -212,17 +211,18 @@ ipcMain.on('vk-account-option', (event, userId) => {
 
 ipcMain.on('vk-coffee', (event, params) => {
   event.preventDefault();
-  // /* eslint-disable camelcase */
+  /* eslint-disable camelcase */
   const {id, access_token, sample_size} = params;
-  let vk = new Vk(event, id, access_token, sample_size, app.getPath('userData'));
+  const vk = new Vk(event, id, access_token, sample_size, app.getPath('userData'));
+  /* eslint-enable camelcase */
   vk.getSubscriptionsById(result => {
     console.log('vk-coffee');
     console.log(result);
     event.sender.send('hide-spinner', id);
     shell.showItemInFolder(result.filenamePublicsTop);
   });
+  // Logs
   // const child = spawn('coffee', ['vk/vk.coffee', id, access_token]);
-  /* eslint-enable camelcase */
   // let logWindow = new BrowserWindow({
   //   title: 'Log',
   //   show: false,
@@ -399,7 +399,7 @@ const createMainWindow = async () => {
     show: false,
     width: 1024,
     height: 768,
-    frame: process.platform === 'darwin' ? false : true,
+    frame: process.platform !== 'darwin',
     acceptFirstMouse: true,
     titleBarStyle: 'hidden',
     webPreferences: {
@@ -413,7 +413,7 @@ const createMainWindow = async () => {
 
   preferencesWindow.once('show', () => {
     preferencesWindow.webContents.send('accounts', accountsData.accounts);
-    if(preferencesData.preferences.vkSelected) {
+    if (preferencesData.preferences.vkSelected) {
       console.log('preferencesData.vkSelected:', preferencesData.preferences.vkSelected);
       // !!!!
       const _account = accountsData.getAccounts().accounts[preferencesData.preferences.vkSelected.user_id];
