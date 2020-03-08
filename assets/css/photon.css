@@ -596,6 +596,23 @@ input[type="checkbox"] {
   outline: none;
 
 }
+
+.form-control-sample-size {
+  /* display: inline-block; */
+  width: 52px;
+  height: 25px;
+  font-size: 12px;
+  /* line-height: 1.6; */
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+  position: absolute;
+  right: 48px;
+  text-align: right;
+  margin-top: 8px;
+
+}
 .form-control-appearance {
   margin-left: 0.5em;
   padding: .5em;
@@ -622,6 +639,14 @@ textarea {
 
 .form-group {
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+}
+
+.form-group-sample-size {
+  /* margin-bottom: 10px; */
   display: flex;
   align-items: center;
   justify-content: flex-end;

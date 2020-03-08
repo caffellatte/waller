@@ -21,6 +21,14 @@ const vkUserLikesButton = document.querySelector('#icon-heart-empty');
 const windowContent = document.querySelector('.window-content');
 const vkAccountOption = document.querySelector('#account-option');
 
+ipcRenderer.on('hide-spinner', (event, id) => {
+  console.log('ipcRenderer.hide-spinner', id);
+  document.querySelector(`#spinner-${id}`).style.visibility = 'hidden';
+  document.querySelectorAll('button.btn.btn-default.pull-right.community').forEach(node => {
+    node.disabled = false;
+  });
+});
+
 // On receive accounts
 ipcRenderer.on('vk-selected', (event, _account) => {
   if (_account) {
@@ -29,6 +37,7 @@ ipcRenderer.on('vk-selected', (event, _account) => {
     updateGroupList(_account);
   }
 });
+
 // On receive accounts
 ipcRenderer.on('accounts', (event, accounts) => {
   console.log('ipcRenderer.accounts', accounts);
@@ -61,6 +70,15 @@ ipcRenderer.on('show-preferences', preferences => {
   appearanceForm.classList.add('is-shown');
   preferencesGeneral.classList.add('is-shown');
   accountsAddButton.classList.remove('is-shown');
+});
+
+ipcRenderer.on('show-preferences-from-menu', preferences => {
+  console.log('show-preferences', preferences);
+  accountsList.classList.remove('is-shown');
+  appearanceForm.classList.add('is-shown');
+  preferencesGeneral.classList.add('is-shown');
+  accountsAddButton.classList.remove('is-shown');
+  vkUserLikesForm.classList.remove('is-shown');
 });
 
 // Old with  footer, add buttons
@@ -146,17 +164,33 @@ const updateGroupList = _account => {
           const template = link.import.querySelector('.section');
           const clone = document.importNode(template.content, true);
           clone.querySelector('div.media-body').setAttribute('id', value.screen_name);
+          clone.querySelector('img.img-circle.media-object.pull-right').setAttribute('id', `spinner-${value.id}`);
           clone.querySelector('img.img-circle').setAttribute('src', value.photo_50);
           clone.querySelector('li.list-group-item-communities > div > strong').textContent = `${value.name}`;
           clone.querySelector('li.list-group-item-communities > div > p').textContent = `vk.com/${value.screen_name} (${value.members_count})`;
+          clone.querySelector('input.form-control-sample-size').setAttribute('id', `sample-size-${value.id}`);
+          if(value.members_count > 1000) {
+            clone.querySelector('input.form-control-sample-size').setAttribute('max', 999);
+            clone.querySelector('input.form-control-sample-size').setAttribute('placeholder', 999);
+            clone.querySelector('input.form-control-sample-size').value = 999;
+          } else {
+            clone.querySelector('input.form-control-sample-size').setAttribute('max', value.members_count);
+            clone.querySelector('input.form-control-sample-size').setAttribute('placeholder', value.members_count);
+            clone.querySelector('input.form-control-sample-size').value = value.members_count;
+          }
           clone.querySelector('li.list-group-item-communities > div > button').addEventListener('click', event => {
             event.preventDefault();
+            document.querySelector(`#spinner-${value.id}`).style.visibility = 'visible';
             console.log(value);
             ipcRenderer.send('vk-coffee', {
               id: value.id,
               /* eslint-disable camelcase */
-              access_token: _account.access_token
+              access_token: _account.access_token,
               /* eslint-enable camelcase */
+              sample_size: document.querySelector(`#sample-size-${value.id}`).value
+            });
+            document.querySelectorAll('button.btn.btn-default.pull-right.community').forEach(node => {
+              node.disabled = true;
             });
           });
           if (document.querySelector('#vk-user-likes-form')) {

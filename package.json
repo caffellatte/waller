@@ -19,9 +19,10 @@
 	"author": {
 		"name": "Mikhail Lutsenko",
 		"email": "m.g.lutsenko@gmail.com",
-		"url": "https://sindresorhus.com"
+		"url": "https://caffellatte.website"
 	},
 	"scripts": {
+		"prestart": "coffee -bc ./vk/callVkApi.coffee; coffee -bc ./vk/error.coffee; coffee -bc ./vk/getSubscriptions.coffee; coffee -bc ./vk/sequence.coffee;  coffee -bc ./vk/timeout.coffee; coffee -bc ./vk/vk.coffee",
 		"postinstall": "electron-builder install-app-deps",
 		"lint": "xo",
 		"test": "npm run lint",

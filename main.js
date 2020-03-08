@@ -14,6 +14,7 @@ const config = require('./config');
 const DataStore = require('./main-process/store');
 const accountsData = new DataStore({name: 'accounts'});
 const preferencesData = new DataStore({name: 'preferences'});
+const Vk = require('./vk/vk.js');
 console.log(app.getPath('userData'));
 
 unhandled();
@@ -37,7 +38,7 @@ const showPreferences = () => {
   const window = BrowserWindow.getAllWindows().filter(win => {
     return win.isVisible();
   });
-  window[0].webContents.send('show-preferences', preferencesData.preferences);
+  window[0].webContents.send('show-preferences-from-menu', preferencesData.preferences);
 };
 
 const helpSubmenu = [
@@ -211,57 +212,64 @@ ipcMain.on('vk-account-option', (event, userId) => {
 
 ipcMain.on('vk-coffee', (event, params) => {
   event.preventDefault();
-  /* eslint-disable camelcase */
-  const {id, access_token} = params;
-  const child = spawn('coffee', ['vk/vk.coffee', id, access_token]);
+  // /* eslint-disable camelcase */
+  const {id, access_token, sample_size} = params;
+  let vk = new Vk(event, id, access_token, sample_size, app.getPath('userData'));
+  vk.getSubscriptionsById(result => {
+    console.log('vk-coffee');
+    console.log(result);
+    event.sender.send('hide-spinner', id);
+    shell.showItemInFolder(result.filenamePublicsTop);
+  });
+  // const child = spawn('coffee', ['vk/vk.coffee', id, access_token]);
   /* eslint-enable camelcase */
-  let logWindow = new BrowserWindow({
-    title: 'Log',
-    show: false,
-    width: 600,
-    height: 768,
-    frame: false,
-    acceptFirstMouse: true,
-    titleBarStyle: 'hidden',
-    webPreferences: {
-      nodeIntegration: true,
-      blinkFeatures: 'OverlayScrollbars'
-    }
-  });
-
-  logWindow.on('ready-to-show', () => {
-    logWindow.show();
-  });
-
-  logWindow.on('closed', () => {
-    // Dereference the window
-    // For multiple windows store them in an array
-    logWindow = undefined;
-  });
-
-  logWindow.loadFile(path.join(__dirname, 'sections', 'log.html'));
-  logWindow.once('show', () => {
-    process.stdin.pipe(child.stdin);
-    child.stdout.on('data', data => {
-      logWindow.webContents.send('log-stdout-vk', data);
-      console.log(`child stdout:\n${data}`);
-    });
-    child.stdout.on('end', data => {
-      console.log('EEEENNNDDD');
-      console.log(data);
-      // Comments
-      // logWindow.webContents.send('log-stdout-vk', data);
-      // console.log(`child stdout:\n${data}`);
-    });
-  });
-  // Comments
-  // const selectedAccount = accountsData.getAccounts(userId).accounts;
-  // preferencesData.addPreferences({title: "vkSelected", value: selectedAccount[userId.slice(2)]});
-  // preferencesData.savePreferences();
-  // console.log(preferencesData);
-  // console.log('Trying to delete account:', userId);
-  // console.log('accounts.js => delete-account', updatedAccounts);
-  // event.sender.send('accounts', updatedAccounts);
+  // let logWindow = new BrowserWindow({
+  //   title: 'Log',
+  //   show: false,
+  //   width: 600,
+  //   height: 768,
+  //   frame: false,
+  //   acceptFirstMouse: true,
+  //   titleBarStyle: 'hidden',
+  //   webPreferences: {
+  //     nodeIntegration: true,
+  //     blinkFeatures: 'OverlayScrollbars'
+  //   }
+  // });
+  //
+  // logWindow.on('ready-to-show', () => {
+  //   logWindow.show();
+  // });
+  //
+  // logWindow.on('closed', () => {
+  //   // Dereference the window
+  //   // For multiple windows store them in an array
+  //   logWindow = undefined;
+  // });
+  //
+  // logWindow.loadFile(path.join(__dirname, 'sections', 'log.html'));
+  // logWindow.once('show', () => {
+  //   process.stdin.pipe(child.stdin);
+  //   child.stdout.on('data', data => {
+  //     logWindow.webContents.send('log-stdout-vk', data);
+  //     console.log(`child stdout:\n${data}`);
+  //   });
+  //   child.stdout.on('end', data => {
+  //     console.log('EEEENNNDDD');
+  //     console.log(data);
+  //     // Comments
+  //     // logWindow.webContents.send('log-stdout-vk', data);
+  //     // console.log(`child stdout:\n${data}`);
+  //   });
+  // });
+  // // Comments
+  // // const selectedAccount = accountsData.getAccounts(userId).accounts;
+  // // preferencesData.addPreferences({title: "vkSelected", value: selectedAccount[userId.slice(2)]});
+  // // preferencesData.savePreferences();
+  // // console.log(preferencesData);
+  // // console.log('Trying to delete account:', userId);
+  // // console.log('accounts.js => delete-account', updatedAccounts);
+  // // event.sender.send('accounts', updatedAccounts);
 });
 
 // Delete-accounts from accounts list window
@@ -336,6 +344,7 @@ ipcMain.on('accounts-auth', (event, arg) => {
         count: 1000,
         extended: 1,
         fields: 'photo_50,members_count',
+        filter: 'groups,publics,events',
         access_token: account.access_token
       });
       console.log(response.items);
@@ -390,7 +399,7 @@ const createMainWindow = async () => {
     show: false,
     width: 1024,
     height: 768,
-    frame: false,
+    frame: process.platform === 'darwin' ? false : true,
     acceptFirstMouse: true,
     titleBarStyle: 'hidden',
     webPreferences: {
@@ -404,13 +413,16 @@ const createMainWindow = async () => {
 
   preferencesWindow.once('show', () => {
     preferencesWindow.webContents.send('accounts', accountsData.accounts);
-    console.log('preferencesData.vkSelected:', preferencesData.preferences.vkSelected);
-    const _account = accountsData.getAccounts().accounts[preferencesData.preferences.vkSelected.user_id];
-    preferencesWindow.webContents.send('vk-selected', _account);
-    console.log('preferencesWindow (_account)', _account);
-    preferencesWindow.webContents.send('groups', _account);
-    preferencesWindow.webContents.send('subscriptions', _account);
-    preferencesWindow.webContents.send('show-communities', preferencesData.preferences);
+    if(preferencesData.preferences.vkSelected) {
+      console.log('preferencesData.vkSelected:', preferencesData.preferences.vkSelected);
+      // !!!!
+      const _account = accountsData.getAccounts().accounts[preferencesData.preferences.vkSelected.user_id];
+      preferencesWindow.webContents.send('vk-selected', _account);
+      console.log('preferencesWindow (_account)', _account);
+      preferencesWindow.webContents.send('groups', _account);
+      preferencesWindow.webContents.send('subscriptions', _account);
+      preferencesWindow.webContents.send('show-communities', preferencesData.preferences);
+    }
   });
 
   preferencesWindow.on('closed', () => {
