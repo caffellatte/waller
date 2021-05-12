@@ -6,6 +6,7 @@ const {is, appMenu, aboutMenuItem, openUrlMenuItem, openNewGitHubIssue, debugInf
 const {VK} = require('vk-io');
 console.log('nativeTheme:', nativeTheme);
 // Import autoupdater module const {autoUpdater} = require('electron-updater');
+const {autoUpdater} = require('electron-updater');
 const unhandled = require('electron-unhandled');
 const debug = require('electron-debug');
 const contextMenu = require('electron-context-menu');
@@ -24,14 +25,14 @@ app.setAppUserModelId('com.flex.waller');
 
 // Uncomment this before publishing your first version.
 // It's commented out as it throws an error if there are no published versions.
-// if (!is.development) {
-//   const FOUR_HOURS = 1000 * 60 * 60 * 4;
-//   setInterval(() => {
-//     autoUpdater.checkForUpdates();
-//   }, FOUR_HOURS);
-//
-//   autoUpdater.checkForUpdates();
-// }
+if (!is.development) {
+  const FOUR_HOURS = 1000 * 60 * 60 * 4;
+  setInterval(() => {
+    autoUpdater.checkForUpdates();
+  }, FOUR_HOURS);
+
+  autoUpdater.checkForUpdates();
+}
 
 const showPreferences = () => {
   const window = BrowserWindow.getAllWindows().filter(win => {
